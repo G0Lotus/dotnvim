@@ -146,7 +146,7 @@ local load_core = function()
     -- clipboard_settings()
 
     require("core.options")
-    require("keymap.comon")
+    require("keymap.common")
     require("keymap.plugins")
     require("core.event")
     pack.load_compile()
@@ -155,3 +155,4 @@ local load_core = function()
 end
 
 load_core()
+
