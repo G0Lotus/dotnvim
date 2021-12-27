@@ -1,6 +1,6 @@
 local config = {}
 
-function config.nvim_lsp() require("modules.completion.lspconfig") end
+function config.nvim_lsp() require("modules.completion.lsp") end
 
 function config.lightbulb()
     vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
@@ -24,7 +24,8 @@ function config.cmp()
         return vim.api.nvim_replace_termcodes(str, true, true, true)
     end
     local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local line = vim.api.nvim_win_get_cursor[0]
+        local col = vim.api.nvim_win_get_cursor[1]
         return col ~= 0 and
                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(
                        col, col):match("%s") == nil
