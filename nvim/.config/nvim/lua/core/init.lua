@@ -150,8 +150,6 @@ local load_core = function()
     require("keymap.plugins")
     require("core.event")
     pack.load_compile()
-
-    vim.cmd [[colorscheme catppuccin]]
 end
 
 load_core()
