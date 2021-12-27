@@ -4,7 +4,6 @@ LABEL maintainer="Kun.HK.Huang"
 ARG BASE_PKGS="git sudo base base-devel zsh paru python3 python-pip nodejs npm"
 ARG NEOVIM_PKGS="neovim ripgrep fzf"
 
-COPY mirrorlist /etc/pacman.d/mirrorlist
 RUN sed -i "s/#Para/Para/" /etc/pacman.conf \
 &&  echo "[archlinuxcn]" >> /etc/pacman.conf \
 &&  echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/\$arch" >> /etc/pacman.conf \
