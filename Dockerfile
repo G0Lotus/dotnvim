@@ -16,8 +16,9 @@ RUN sed -i "s/#Para/Para/" /etc/pacman.conf \
 &&  useradd -m dev \
 &&  echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER dev
-COPY nvim /home/dev/.config/nvim
 
 RUN paru -Syu --skipreview --noconfirm ${NEOVIM_PKGS} \
 &&  pip install neovim \
 &&  sudo npm install -g neovim
+
+COPY nvim /home/dev/.config/nvim
