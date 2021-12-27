@@ -50,8 +50,6 @@ function config.telescope()
                     ["code"] = home .. "/code",
                     ["c"] = home .. "/code/c",
                     ["cpp"] = home .. "/code/cpp",
-                    ["go"] = home .. "/go/src",
-                    ["rust"] = home .. "/code/rs"
                 }
             }
         }

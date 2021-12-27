@@ -129,12 +129,9 @@ function config.nvim_gps()
             -- You can disable any language individually here
             ["c"] = true,
             ["cpp"] = true,
-            ["go"] = true,
-            ["java"] = true,
             ["javascript"] = true,
             ["lua"] = true,
             ["python"] = true,
-            ["rust"] = true
         },
         separator = " > "
     })
@@ -215,7 +212,6 @@ function config.format()
                 }
             }
         },
-        go = {{cmd = {"gofmt -w", "goimports -w"}, tempfile_postfix = ".tmp"}},
         python = {
             {cmd = {"python3 -m autopep8 --in-place --aggressive --aggressive"}}
         },
@@ -224,15 +220,6 @@ function config.format()
                 cmd = {
                     function(file)
                         return string.format("shfmt -w %s", file)
-                    end
-                }
-            }
-        },
-        rust = {
-            {
-                cmd = {
-                    function(file)
-                        return string.format("rustfmt %s", file)
                     end
                 }
             }

@@ -2,7 +2,7 @@ FROM archlinux
 LABEL maintainer="Kun.HK.Huang"
 
 ARG BASE_PKGS="git sudo base base-devel zsh paru python3 python-pip nodejs npm"
-ARG NEOVIM_PKGS="neovim ripgrep fzf"
+ARG NEOVIM_PKGS="neovim ripgrep fzf clang lua-format-git prettier jq shfmt"
 
 RUN sed -i "s/#Para/Para/" /etc/pacman.conf \
 &&  echo "[archlinuxcn]" >> /etc/pacman.conf \
@@ -18,7 +18,12 @@ RUN sed -i "s/#Para/Para/" /etc/pacman.conf \
 USER dev
 
 RUN paru -Syu --skipreview --noconfirm ${NEOVIM_PKGS} \
-&&  pip install neovim \
+&&  pip install wheel --user \
+&&  pip install neovim autopep8 yapf --user \
 &&  sudo npm install -g neovim
 
 COPY nvim /home/dev/.config/nvim
+
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
