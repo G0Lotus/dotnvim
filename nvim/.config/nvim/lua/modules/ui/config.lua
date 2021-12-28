@@ -58,6 +58,7 @@ function config.catppuccin()
             hop = true
         }
     })
+    vim.cmd [[colorscheme catppuccin]]
 end
 
 function config.lualine()
