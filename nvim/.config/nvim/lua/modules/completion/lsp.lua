@@ -1,3 +1,19 @@
+if not packer_plugins["nvim-lspconfig"].loaded then
+    vim.cmd [[packadd nvim-lspconfig]]
+end
+
+if not packer_plugins["nvim-lsp-installer"].loaded then
+    vim.cmd [[packadd nvim-lsp-installer]]
+end
+
+if not packer_plugins["lsp_signature.nvim"].loaded then
+    vim.cmd [[packadd lsp_signature.nvim]]
+end
+
+if not packer_plugins["lspsaga.nvim"].loaded then
+    vim.cmd [[packadd lspsaga.nvim]]
+end
+
 local nvim_lsp = require("lspconfig")
 local lsp_installer = require("nvim-lsp-installer")
 
