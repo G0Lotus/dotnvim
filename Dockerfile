@@ -22,7 +22,8 @@ RUN paru -Syu --skipreview --noconfirm ${NEOVIM_PKGS} \
 &&  pip install neovim autopep8 yapf --user \
 &&  sudo npm install -g neovim
 
-COPY nvim /home/dev/.config/nvim
+ADD nvim/.config/nvim /home/dev/.config/nvim
 
+RUN git clone "https://github.com/wbthomason/packer.nvim" /home/dev/.local/share/nvim/site/pack/packer/opt/packer.nvim
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
