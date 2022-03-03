@@ -1,29 +1,30 @@
-FROM archlinux
-LABEL maintainer="Kun.HK.Huang"
+FROM archlinux:base-devel
+LABEL maintainer="KUN.HK.HUANG"
 
-ARG BASE_PKGS="git sudo base base-devel zsh paru python3 python-pip nodejs npm"
-RUN sed -i "s/#Para/Para/" /etc/pacman.conf \
-&&  echo "[archlinuxcn]" >> /etc/pacman.conf \
-&&  echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/\$arch" >> /etc/pacman.conf \
-&&  pacman-key --init \
-&&  pacman-key --populate \
-&&  pacman -Syy --noconfirm archlinuxcn-keyring reflector \
-&&  iso=$(curl -4 ifconfig.co/country-iso) \
-&&  reflector --age 6 --latest 20 --fastest 20 --threads 20 --sort rate --protocol https -c ${iso} --save ${PWD}/mirrorlist \
-&&  pacman -Syyu --needed --noconfirm ${BASE_PKGS} \
-&&  useradd -m dev \
-&&  echo "dev ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# install dependencies
+RUN iso=$(curl -4 "ifconfig.co/country-iso") && \
+    curl "https://archlinux.org/mirrorlist/?country=${iso}&protocol=http&protocol=https&ip_version=4" | sed "s/#Server/Server/g" > /etc/pacman.d/mirrorlist && \
+    sed -i "s/#Para/Para/g" /etc/pacman.conf && \
+    echo "[archlinuxcn]" >> /etc/pacman.conf && \
+    echo "Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/\$arch" >> /etc/pacman.conf && \
+    pacman-key --init && \
+    pacman-key --populate && \
+    pacman -Syy --noconfirm archlinuxcn-keyring reflector && \
+    reflector --age 6 --latest 20 --fastest 20 --threads 20 --sort rate --protocol https -c ${iso} --save /etc/pacman.d/mirrorlist && \
+    pacman -S --noconfirm neovim ripgrep fd fzf zsh tmux gitui lazygit
 
-USER dev
+# install python env
+RUN pacman -S --noconfirm python-pip && \
+    pip install neovim black flake8
 
-ARG NEOVIM_PKGS="neovim ripgrep fzf clang lua-format-git prettier jq shfmt gitui lazygit"
-RUN paru -Syu --skipreview --noconfirm ${NEOVIM_PKGS} \
-&&  pip install wheel --user \
-&&  pip install neovim autopep8 yapf --user \
-&&  sudo npm install -g neovim
+# install nodejs env
+RUN pacman -S --noconfirm nodejs npm && \
+    npm install -g neovim
 
-ADD nvim/.config/nvim /home/dev/.config/nvim
+# install formatter tool
+RUN pacman -S --noconfirm prettier shfmt
 
-RUN git clone "https://github.com/wbthomason/packer.nvim" /home/dev/.local/share/nvim/site/pack/packer/opt/packer.nvim
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'TSUpdate' -c 'PackerSync'
+# install neovim env
+# TODO add neovim config
+RUN git clone https://github.com/wbthomason/packer.nvim.git ~/.local/share/nvim/site/pack/packer/start/packer.nvim && \
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
