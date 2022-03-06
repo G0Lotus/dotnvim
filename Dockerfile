@@ -11,7 +11,7 @@ RUN iso=$(curl -4 "ifconfig.co/country-iso") && \
     pacman-key --populate && \
     pacman -Syy --noconfirm archlinuxcn-keyring reflector && \
     reflector --age 6 --latest 20 --fastest 20 --threads 20 --sort rate --protocol https -c ${iso} --save /etc/pacman.d/mirrorlist && \
-    pacman -Syy --noconfirm neovim ripgrep fd fzf zsh tmux gitui lazygit
+    pacman -Syy --noconfirm neovim ripgrep fd fzf zsh tmux tig gitui lazygit
 
 # install python env
 RUN pacman -S --noconfirm python-pip && \
